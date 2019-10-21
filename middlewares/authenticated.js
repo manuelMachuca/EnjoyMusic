@@ -8,7 +8,6 @@ exports.ensureAuth = function(req, res, next){
 	if(!req.headers.authorization){
 		return res.status(403).send({message:'La peticion no tiene cabecera de autenticacion'});
 	}
-
 	var token = req.headers.authorization.replace(/['"]+/g, '');
 
 	try{
