@@ -2,7 +2,7 @@
 
 var jwt = require('jwt-simple');
 var moment = require('moment');
-var secret = "clave_secreta";
+var secret = 'clave_secreta';
 
 //El usuario lo guarda dentro de un token
 exports.createToken = function(user){

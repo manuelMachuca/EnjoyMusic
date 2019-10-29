@@ -3,7 +3,8 @@
 var User = require('../model/user');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../services/jwt');
-
+var fs = require('fs');
+var path = require('path');
 
 function pruebas(req, res) {
 	res.status(200).send({
@@ -57,12 +58,12 @@ function loginUser(req, res){
 
 	var email = params.email;
 	var password = params.password;
+			console.log('front: ' + password);
 
 	User.findOne({email: email.toLowerCase()}, (err, user) =>{
 		if(err){
 			res.status(500).send({message: 'Error en la péticion'});
 		}else{
-			console.log(user);
 			if(!user){
 				res.status(404).send({message:'El usuario no existe'});
 			}else{
@@ -87,8 +88,71 @@ function loginUser(req, res){
 	});
 }
 
+function updateUser(req, res){
+	var userId = req.params.id;
+	var user = req.body;
+
+	User.findByIdAndUpdate(userId, user, (err, userUpdated) =>{
+		if(err){
+			res.status(500).send({message: 'Error al actualizar el usuario'});
+		}else{
+			if(!userUpdated){
+				res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+			}else{
+				res.status(200).send({user: userUpdated});
+			}
+		}
+	});
+
+}
+
+function uploadImage(req,res){
+	var userId = req.params.id;
+	var file_name = 'No subido ...';
+
+	if(req.files){
+		var file_path = req.files.image.path;
+		var file_split = file_path.split('\\')
+		var file_name = file_split[2];
+
+		var file_split_ext = file_path.split('\.')
+		var file_ext = file_split_ext[1];
+
+		if(file_ext == 'png' || file_ext =='jpg' || file_ext == 'gif'){
+			User.findByIdAndUpdate(userId, {image: file_name}, (err, userUpdated) =>{
+				if(!userUpdated){
+					res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+				}else{
+					res.status(200).send({user: userUpdated});
+				}
+			});
+		}else{
+			res.status(200).send({message: 'Formato de archivo no permitido'});
+		}
+	}else{
+		res.status(200).send({message: 'No ha subido imagen alguna'});
+	}
+}
+
+function getImageFile(req,res){
+	var imageFile = req.params.imageFile;
+	var path_file = './uploads/users/'+imageFile;
+
+	fs.exists(path_file, function(exists){
+		if(exists){
+			res.sendFile(path.resolve(path_file));
+		}else{
+			res.status(200).send({message: 'No existe la imagen'});
+		}
+	});
+
+}
+
 module.exports = {
 	pruebas,
 	saveUser,
-	loginUser
+	loginUser,
+	updateUser,
+	uploadImage,
+	getImageFile
 };
