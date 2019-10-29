@@ -91,7 +91,7 @@ function loginUser(req, res){
 function updateUser(req, res){
 	var userId = req.params.id;
 	var user = req.body;
-
+	
 	User.findByIdAndUpdate(userId, user, (err, userUpdated) =>{
 		if(err){
 			res.status(500).send({message: 'Error al actualizar el usuario'});
