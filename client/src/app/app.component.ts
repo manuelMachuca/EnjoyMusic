@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params} from '@angular/router';
 import { User } from './model/user';
 import { UserService } from './services/user.services';
 
@@ -21,16 +22,20 @@ export class AppComponent implements OnInit{
   //Guardaremos en el Local Storage los valores del usuario logueado
 
   constructor(
-  	private _userService: UserService //Declara propiedad de la clase (get and set)
+  	private _userService: UserService,
+    private _router: Router
+     //Declara propiedad de la clase (get and set)
   ){
   	this.user = new User('','','','','ROLE_USER','');
   	this.user_register = new User('','','','','ROLE_USER','');//Inicializar propiedades/atributos
+    console.log("Constructor");
   }
 
   //Ejecuta codigo al cargar el componente
   ngOnInit(){
   	this.identity = this._userService.getIdentity();
   	this.token = this._userService.getToken();
+    console.log("ngOnInit");
   }
 
   logout(){
@@ -43,6 +48,7 @@ export class AppComponent implements OnInit{
   	this.token = null;
     this.mensajeError = null;
     this.mensajeSuccess = null;
+    this._router.navigate(['/']);
   }
 
   public registerUser(){

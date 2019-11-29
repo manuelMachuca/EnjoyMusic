@@ -107,9 +107,11 @@ function updateUser(req, res){
 }
 
 function uploadImage(req,res){
+	console.log('usuario:');
 	var userId = req.params.id;
+	console.log('usuario: ' + userId);
 	var file_name = 'No subido ...';
-
+	console.log('Subir imagen');
 	if(req.files){
 		var file_path = req.files.image.path;
 		var file_split = file_path.split('\\')

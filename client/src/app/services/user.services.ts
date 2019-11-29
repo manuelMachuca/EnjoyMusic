@@ -40,7 +40,7 @@ export class UserService{
 			'Authorization':this.getToken()
 		});
 		
-		return this._http.post(this.url+'update-user'+update_to_register._id, 
+		return this._http.put(this.url+'update-user/'+update_to_register._id, 
 			params, {headers: headers}).map(res=> res.json());		
 	}
 

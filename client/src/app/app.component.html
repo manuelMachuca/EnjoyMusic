@@ -39,7 +39,10 @@
 
 <div class="clearfix"></div>
 
-<div class="central col-lg-11" *ngIf="identity">
+<!--<div class="central col-lg-11" [class.hidden]="!identity">
+	<router-outlet></router-outlet>
+</div>-->
+<div class="central col-lg-11" [class.hidden]="!identity">
 	<router-outlet></router-outlet>
 </div>
 
