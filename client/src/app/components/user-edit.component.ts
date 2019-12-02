@@ -36,38 +36,38 @@ export class UserEditComponent implements OnInit{
 	onUserUpdate(){
 		console.log(this.user);
 		this._userService.updateUser(this.user).subscribe(
-  		response =>{
-  			console.log(response.user);
-  			let user = response.user;
-  			this.user = user;
+	  		response =>{
+	  			console.log(response.user);
+	  			let user = response.user;
+	  			this.user = user;
 
-  			if(!user._id){
-  				alert("Problemas con el usuario");
-          		this.mensajeError = 'Ocurrio un error al actualizar el usuario';
-  			}else{
-  				if(!this.filesToUpload){
-
-  				}else{
-  					this.makeFileRequest(this.url+'updload-image-user/'+user._id,[],this.filesToUpload).then(
-  						(result: any) => {
-  							this.user.image =result.image;
-							localStorage.setItem('identity', JSON.stringify(this.user));
-
-							console.log(this.user);
-  						}
-  					);
-  				}
-  				console.log('Registrado correcto');
-          		this.alertUpdate = 'Se actualizo correctamente el usuario ' + this.user.email + '.';
-          	}
-  		},
-  		error =>{
-  			var errorMessage = <any> error;
-        	this.mensajeError = 'Ocurrio un error al actualizar el usuario';
-  			if(errorMessage != null){
-  				console.log(error);
-  			}
-  		}
+	  			if(!user._id){
+	  				alert("Problemas con el usuario");
+	          		this.mensajeError = 'Ocurrio un error al actualizar el usuario';
+	  			}else{
+	  				if(!this.filesToUpload){
+	  				}else{
+	  					this.makeFileRequest(this.url+'updload-image-user/'+user._id,[],this.filesToUpload).then(
+	  						(result: any) => {
+	  							this.user.image =result.image;
+	  						}
+	  					);
+	  				}
+	  				
+	  				localStorage.setItem('identity', JSON.stringify(this.user));
+	  				document.getElementById('identity_name').innerHTML = this.user.name;
+					console.log(this.user);
+	  				console.log('Registrado correcto');
+	          		this.alertUpdate = 'Se actualizo correctamente el usuario ' + this.user.email + '.';
+	          	}
+	  		},
+	  		error =>{
+	  			var errorMessage = <any> error;
+	        	this.mensajeError = 'Ocurrio un error al actualizar el usuario';
+	  			if(errorMessage != null){
+	  				console.log(error);
+	  			}
+	  		}
   		);
 	}
 
@@ -85,22 +85,24 @@ export class UserEditComponent implements OnInit{
 		return new Promise(function(resolve, reject){
 			var formData: any = new FormData();
 			var xhr = new XMLHttpRequest();
-
-			for (var i = 0; i <= files.length; i++) {
+			for (var i = 0; i < files.length; i++) {
 				formData.append('image', files[i], files[i].name);
 			}
-
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4){
-					resolve(JSON.parse(xhr.response));
-				}else{
-					reject(xhr.response);
+					if(xhr.status == 200){
+						resolve(JSON.parse(xhr.response));
+					}else{
+						reject(xhr.response);
+					}
 				}
-			}
+			};
 
 			xhr.open('POST',url,true);
 			xhr.setRequestHeader('Authorization', token);
 			xhr.send(formData);
+			console.log('acabo');
 		});
+	
 	}
 }

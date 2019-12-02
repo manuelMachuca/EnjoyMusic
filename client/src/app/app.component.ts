@@ -26,8 +26,8 @@ export class AppComponent implements OnInit{
     private _router: Router
      //Declara propiedad de la clase (get and set)
   ){
-  	this.user = new User('','','','','ROLE_USER','');
-  	this.user_register = new User('','','','','ROLE_USER','');//Inicializar propiedades/atributos
+  	this.user = new User('','','','','ROLE_USER','','');
+  	this.user_register = new User('','','','','ROLE_USER','','');//Inicializar propiedades/atributos
     console.log("Constructor");
   }
 
@@ -42,8 +42,8 @@ export class AppComponent implements OnInit{
   	localStorage.removeItem('identity');
   	localStorage.removeItem('token');
     localStorage.clear();
-    this.user = new User('','','','','ROLE_USER','');
-    this.user_register = new User('','','','','ROLE_USER','');
+    this.user = new User('','','','','ROLE_USER','','');
+    this.user_register = new User('','','','','ROLE_USER','','');
   	this.identity = null;
   	this.token = null;
     this.mensajeError = null;
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit{
   				//Creamos el localStorage para tener una session
   				console.log('Registrado correcto');
           this.mensajeSuccess = 'Se registro correctamente el usuario ' + this.user_register.email + '.';
-  				this.user_register = new User('','','','','ROLE_USER','');
+  				this.user_register = new User('','','','','ROLE_USER','','');
   			}
   			console.log(response);
 

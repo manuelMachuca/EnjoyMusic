@@ -99,7 +99,7 @@ function updateUser(req, res){
 			if(!userUpdated){
 				res.status(404).send({message: 'No se ha podido actualizar el usuario'});
 			}else{
-				res.status(200).send({user: userUpdated});
+				res.status(200).send({user});
 			}
 		}
 	});
@@ -107,7 +107,6 @@ function updateUser(req, res){
 }
 
 function uploadImage(req,res){
-	console.log('usuario:');
 	var userId = req.params.id;
 	console.log('usuario: ' + userId);
 	var file_name = 'No subido ...';
@@ -125,6 +124,7 @@ function uploadImage(req,res){
 				if(!userUpdated){
 					res.status(404).send({message: 'No se ha podido actualizar el usuario'});
 				}else{
+					console.log('Retorno correctamente');
 					res.status(200).send({image: file_name, user: userUpdated});
 				}
 			});
@@ -137,6 +137,7 @@ function uploadImage(req,res){
 }
 
 function getImageFile(req,res){
+	console.log('buscano imagen');
 	var imageFile = req.params.imageFile;
 	var path_file = './uploads/users/'+imageFile;
 
